@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>w02: task02</title>
+    </head>
+    <body>
+        <script src="vec3.js"> </script>
+        <input type = "number" id="num1">
+        <input type = "number" id="num2">
+        <input type = "number" id="num3">
+        <input type = "button" value="ok" onclick="main()">
+        <script>
+            function main()
+            {
+                var x = document.getElementById("num1").value;
+                var y = document.getElementById("num2").value;
+                var z = document.getElementById("num3").value;
+                document.write("<BR>");
+                var v = new Vec3(x,y,z);
+                var min = v.Min();
+                var mid = v.Mid();
+                var max = v.Max();
+                document.write("max:"+max+"<BR>");
+                document.write("mid:"+mid+"<BR>");
+                document.write("min:"+min+"<BR>");
+            }
+        </script>
+    </body>
+</html>
