@@ -5,7 +5,7 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv")
             parent: '#drawing_region',
             width: 256,
             height: 256,
-            margin: {top:30, right:10, bottom:40, left:50}
+            margin: {top:30, right:10, bottom:40, left:70}
         };
 
         const bar_chart = new BarChart( config, data );
@@ -22,7 +22,7 @@ class BarChart {
             parent: config.parent,
             width: config.width || 216,
             height: config.height || 216,
-            margin: config.margin || {top:30, right:10, bottom:40, left:100}
+            margin: config.margin || {top:30, right:10, bottom:40, left:70}
         }
         this.data = data;
         this.init();
@@ -94,7 +94,7 @@ class BarChart {
                   .data(self.data)
                   .enter()
                   .append("text")
-                  .attr("x", (xmin + xmax)/2 - 20)
+                  .attr("x", (xmin + xmax)/2 - 40)
                   .attr("y", -10)
                   .text("Bace stats of Pachirisu");
 
