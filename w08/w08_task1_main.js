@@ -51,6 +51,7 @@ class BarChart {
             .paddingInner(0.1);
            
         self.xaxis = d3.axisBottom( self.xscale )
+           
             .ticks(5)
             .tickSizeOuter(0);
             
@@ -88,6 +89,14 @@ class BarChart {
                   .attr("y", d => self.yscale(d.l))
                   .attr("width", d => self.xscale(d.w))
                   .attr("height", self.yscale.bandwidth());
+
+        self.chart.selectAll("text")
+                  .data(self.data)
+                  .enter()
+                  .append("text")
+                  .attr("x", (xmin + xmax)/2 - 20)
+                  .attr("y", -10)
+                  .text("Bace stats of Pachirisu");
 
         self.xaxis_group
             .call( self.xaxis );
