@@ -1,21 +1,21 @@
 d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task2.csv")
     .then( data => {
-        data.forEach( d => { d.w = +d.w;  });
+        data.forEach( d => { d.x = +d.x; d.x = +d.x;});
         var config = {
             parent: '#drawing_region',
             width: 256,
             height: 256,
-            margin: {top:30, right:10, bottom:40, left:70}
+            margin: {top:30, right:10, bottom:40, left:30}
         };
 
-        const bar_chart = new BarChart( config, data );
+        const line_chart = new LineChart( config, data );
         bar_chart.update();
     })
     .catch( error => {
         console.log( error );
     });
 
-class BarChart {
+class LineChart {
 
     constructor( config, data ) {
         this.config = {
@@ -42,21 +42,19 @@ class BarChart {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
         self.xscale = d3.scaleLinear()
-            .domain([0, d3.max(self.data, d => d.w)])
+            .domain([0, d3.max(self.data, d => d.x)])
             .range( [0, self.inner_width  ] );
 
         self.yscale = d3.scaleBand()
-            .domain(self.data.map(d => d.l))
+            .domain([0, d3.max(self.data, d => d.y)])
             .range([0, self.inner_height])
-            .paddingInner(0.1);
            
         self.xaxis = d3.axisBottom( self.xscale )
-           
             .ticks(5)
-            .tickSizeOuter(0);
+            
             
         self.yaxis = d3.axisLeft( self.yscale  )
-            .tickSizeOuter(0);
+            
 
         self.xaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, ${self.inner_height})`);
@@ -68,27 +66,29 @@ class BarChart {
     update() {
         let self = this;
 
-        const xmin = d3.min( self.data, d => d.w );
-        const xmax = d3.max( self.data, d => d.w );
+        const xmin = d3.min( self.data, d => d.x );
+        const xmax = d3.max( self.data, d => d.x );
         self.xscale.domain( [0, xmax] );
-        self.yscale.domain(self.data.map(d => d.l))
+        self.domain([0, d3.max(self.data, d => d.y)])
         self.render();
     }
 
     render() {
         let self = this;
-        const xmin = d3.min( self.data, d => d.w );
-        const xmax = d3.max( self.data, d => d.w );
+        const xmin = d3.min( self.data, d => d.x );
+        const xmax = d3.max( self.data, d => d.x );
 
   // Draw bars
-        self.chart.selectAll("rect")
-                  .data(self.data)
-                  .enter()
-                  .append("rect")
-                  .attr("x", 0)
-                  .attr("y", d => self.yscale(d.l))
-                  .attr("width", d => self.xscale(d.w))
-                  .attr("height", self.yscale.bandwidth());
+  
+        self.line = d3.line()
+            .x( d => d.x )
+            .y( d => d.y );
+
+        self.svg.append('path')
+                .attr('d', self.line(self.data))
+                .attr('stroke', 'black')
+                .attr('fill', 'none');
+
 
         self.chart.selectAll("text")
                   .data(self.data)
