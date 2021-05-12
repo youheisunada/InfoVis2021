@@ -1,5 +1,6 @@
 d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv")
     .then( data => {
+        data.forEach( d => { d.w = +d.w;  });
         var config = {
             parent: '#drawing_region',
             width: 256,
@@ -41,20 +42,18 @@ class BarChart {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
         self.xscale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d.w)])
-            .range( [0, self.inner_width ] );
+            .domain([0, d3.max(self.data, d => d.w)])
+            .range( [0, self.inner_width  ] );
 
         self.yscale = d3.scaleBand()
-            .domain(data.map(d => d.l))
-            .range([0, inner_height])
+            .domain(self.data.map(d => d.l))
+            .range([0, self.inner_height])
             .paddingInner(0.1);
            
         self.xaxis = d3.axisBottom( self.xscale )
             .ticks(5)
             .tickSizeOuter(0);
             
-            
-
         self.yaxis = d3.axisLeft( self.yscale  )
             .tickSizeOuter(0);
 
@@ -62,8 +61,7 @@ class BarChart {
             .attr('transform', `translate(0, ${self.inner_height})`);
 
         self.yaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, 0)`);
-
+        
     }
 
     update() {
@@ -72,7 +70,7 @@ class BarChart {
         const xmin = d3.min( self.data, d => d.w );
         const xmax = d3.max( self.data, d => d.w );
         self.xscale.domain( [0, xmax] );
-        self.yscale.domain( [256,0]);
+        self.yscale.domain(self.data.map(d => d.l))
         self.render();
     }
 
@@ -82,12 +80,14 @@ class BarChart {
         const xmax = d3.max( self.data, d => d.w );
 
   // Draw bars
-        self.chart.selectAll("rect").data(data).enter()
+        self.chart.selectAll("rect")
+                  .data(self.data)
+                  .enter()
                   .append("rect")
                   .attr("x", 0)
-                  .attr("y", d => yscale(d.l))
-                  .attr("width", d => xscale(d.w))
-                  .attr("height", yscale.bandwidth());
+                  .attr("y", d => self.yscale(d.l))
+                  .attr("width", d => self.xscale(d.w))
+                  .attr("height", self.yscale.bandwidth());
 
         self.xaxis_group
             .call( self.xaxis );
@@ -96,27 +96,5 @@ class BarChart {
         self.yaxis_group
             .call( self.yaxis );
         
-      
-
-        self.chart.selectAll("text")
-            .data(self.data)
-            .enter()
-            .append("text")
-            .attr("x", (xmin + xmax)/2)
-            .attr("y", ymin - 35)
-            .text("task2");
-
-       
-
-        self.svg.append("text")
-           .attr("transform", "rotate(-90)")
-           .attr("y", 20)
-           .attr("x", -160)
-           .text("y Label");
-
-        self.svg.append("text")
-           .attr("x",(xmin + xmax)/2)
-           .attr("y", 256)
-           .text("x Label");
     }
 }
