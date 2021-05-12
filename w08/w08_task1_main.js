@@ -22,7 +22,7 @@ class BarChart {
             parent: config.parent,
             width: config.width || 216,
             height: config.height || 216,
-            margin: config.margin || {top:30, right:10, bottom:40, left:50}
+            margin: config.margin || {top:30, right:10, bottom:40, left:100}
         }
         this.data = data;
         this.init();
