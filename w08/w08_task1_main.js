@@ -94,7 +94,7 @@ class BarChart {
                   .data(self.data)
                   .enter()
                   .append("text")
-                  .attr("x", (xmin + xmax)/2 - 40)
+                  .attr("x", (xmin + xmax)/2 - 60)
                   .attr("y", -10)
                   .text("Bace stats of Pachirisu");
 

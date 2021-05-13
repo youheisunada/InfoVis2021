@@ -1,6 +1,6 @@
 d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task2.csv")
     .then( data => {
-        data.forEach( d => { d.x = +d.x; d.x = +d.x;});
+        data.forEach( d => { d.x = +d.x; d.y = +d.y;});
         var config = {
             parent: '#drawing_region',
             width: 256,
@@ -9,7 +9,7 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task2.csv")
         };
 
         const line_chart = new LineChart( config, data );
-        bar_chart.update();
+        line_chart.update();
     })
     .catch( error => {
         console.log( error );
@@ -40,36 +40,13 @@ class LineChart {
 
         self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
-
-        self.xscale = d3.scaleLinear()
-            .domain([0, d3.max(self.data, d => d.x)])
-            .range( [0, self.inner_width  ] );
-
-        self.yscale = d3.scaleBand()
-            .domain([0, d3.max(self.data, d => d.y)])
-            .range([0, self.inner_height])
-           
-        self.xaxis = d3.axisBottom( self.xscale )
-            .ticks(5)
-            
-            
-        self.yaxis = d3.axisLeft( self.yscale  )
-            
-
-        self.xaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, ${self.inner_height})`);
-
-        self.yaxis_group = self.chart.append('g')
-        
+     
     }
 
     update() {
         let self = this;
 
-        const xmin = d3.min( self.data, d => d.x );
-        const xmax = d3.max( self.data, d => d.x );
-        self.xscale.domain( [0, xmax] );
-        self.domain([0, d3.max(self.data, d => d.y)])
+       
         self.render();
     }
 
@@ -80,30 +57,15 @@ class LineChart {
 
   // Draw bars
   
-        self.line = d3.line()
+        const line = d3.line()
             .x( d => d.x )
             .y( d => d.y );
 
         self.svg.append('path')
-                .attr('d', self.line(self.data))
+                .attr('d', line(self.data))
                 .attr('stroke', 'black')
                 .attr('fill', 'none');
 
-
-        self.chart.selectAll("text")
-                  .data(self.data)
-                  .enter()
-                  .append("text")
-                  .attr("x", (xmin + xmax)/2 - 40)
-                  .attr("y", -10)
-                  .text("Bace stats of Pachirisu");
-
-        self.xaxis_group
-            .call( self.xaxis );
-      
-          
-        self.yaxis_group
-            .call( self.yaxis );
-        
+       
     }
 }
