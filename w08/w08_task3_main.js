@@ -1,4 +1,4 @@
-d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv")
+d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task3.csv")
     .then( data => {
         data.forEach( d => { d.w = +d.w;});
         var config = {
@@ -64,15 +64,26 @@ class PieChart {
         const arc = d3.arc()
               .innerRadius(0)
               .outerRadius(radius);
+
+        const  text_arc = d3.arc()
+              .outerRadius(128)
+              .innerRadius(128);
   
         self.svg.selectAll('pie')
             .data( pie(self.data) )
             .enter()
             .append('path')
             .attr('d', arc)
-            .attr('fill', 'black')
             .attr('stroke', 'white')
+            .data(self.data)
+            .attr('fill',function(d){ return d.c; })    
             .style('stroke-width', '2px');
-       
+            
+            self.svg.selectAll('text')
+            .data(self.data)
+            .enter()
+            .append('text')
+            .attr("transform", function(d) { return "translate(" + text_arc.centroid(d) + ")" })
+            .text(function(d){ return d.l});       
     }
 }
