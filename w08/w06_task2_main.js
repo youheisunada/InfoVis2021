@@ -43,7 +43,6 @@ class BarChart {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
         self.xscale = d3.scaleLinear()
-            
             .range( [0, self.inner_width ] );
 
         self.yscale = d3.scaleLinear()

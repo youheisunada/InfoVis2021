@@ -24,10 +24,10 @@ const arc = d3.arc()
       .outerRadius(radius);
 
 svg.selectAll('pie')
-    .data( pie(data) )
-    .enter()
-    .append('path')
-    .attr('d', arc)
-    .attr('fill', 'black')
-    .attr('stroke', 'white')
-    .style('stroke-width', '2px');
+      .data( pie(data) )
+      .enter()
+      .append('path')
+      .attr('d', arc)
+      .attr('fill', 'black')
+      .attr('stroke', 'white')
+      .style('stroke-width', '2px');
