@@ -23,11 +23,22 @@ const arc = d3.arc()
       .innerRadius(0)
       .outerRadius(radius);
 
+const textarc = d3.arc()
+      .innerRadius(radius)
+      .outerRadius(radius);
+
 svg.selectAll('pie')
       .data( pie(data) )
       .enter()
       .append('path')
       .attr('d', arc)
-      .attr('fill', 'black')
+      .attr('fill', 'red')
       .attr('stroke', 'white')
       .style('stroke-width', '2px');
+
+svg.selectAll('text')
+      .data(data)
+      .enter()
+      .append('text')
+      .attr("transform", function(d) { return "translate(" + textarc.centroid(d) + ")" })
+      .text(function(d){ return d.label});       
