@@ -1,6 +1,6 @@
 d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task2.csv")
     .then( data => {
-        data.forEach( d => { d.x = +d.x + 30; d.y = +d.y ;});
+        data.forEach( d => { d.x = +d.x+ 30; d.y = +d.y+10 ;});
         var config = {
             parent: '#drawing_region',
             width: 256,
@@ -86,8 +86,8 @@ class LineChart {
   // Draw bars
   
         const line = d3.line()
-            .x( d => d.x )
-            .y( d => d.y );
+            .x( d => self.xscale(d.x) )
+            .y( d => self.yscale(d.y) );
 
             
 
@@ -100,8 +100,8 @@ class LineChart {
             .data(self.data)
             .enter()
             .append("circle")
-            .attr("cx",function(d){ return d.x; })
-            .attr("cy",function(d){ return d.y; })
+            .attr("cx",function(d){ return self.xscale(d.x); })
+            .attr("cy",function(d){ return self.yscale(d.y); })
             .attr("r",5)
             .style('fill', '#000');
 
