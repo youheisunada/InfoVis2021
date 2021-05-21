@@ -1,4 +1,4 @@
-d3.csv("https://vizlab-kobe-lecture.github.io/InfoVis2021/W04/data.csv")
+d3.csv("https://youheisunada.github.io/InfoVis2021/w10/data.csv")
     .then( data => {
         data.forEach( d => { d.x = +d.x; d.y = +d.y; });
 
@@ -129,7 +129,7 @@ class ScatterPlot {
            .on('mouseover', (e,d) => {
                d3.select('#tooltip')
                    .style('opacity', 1)
-                   .html(`<div class="tooltip-label">ID and score</div>(${d.label},${d.x}, ${d.y})`);
+                   .html(`<div class="tooltip-label">${d.label}</div>(${d.x}, ${d.y})`);
                    e.style("fill","red");
            })
            .on('mousemove', (e) => {
