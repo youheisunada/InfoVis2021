@@ -69,11 +69,11 @@ class ScatterPlot {
 
         const xmin = d3.min( self.data, d => d.x );
         const xmax = d3.max( self.data, d => d.x );
-        self.xscale.domain( [0, xmax] );
+        self.xscale.domain( [xmin - 10, xmax + 10] );
 
         const ymin = d3.min( self.data, d => d.y );
         const ymax = d3.max( self.data, d => d.y );
-        self.yscale.domain( [ ymax,0] );
+        self.yscale.domain( [ ymax + 5, ymin - 5] );
 
         self.render();
     }
@@ -103,7 +103,7 @@ class ScatterPlot {
             .data(self.data)
             .enter()
             .append("text")
-            .attr("x", (xmin + xmax)/2)
+            .attr("x", (xmin + xmax)/2 - 50)
             .attr("y", ymin - 35)
             .text("task2");
 
@@ -118,12 +118,12 @@ class ScatterPlot {
            .attr("transform", "rotate(-90)")
            .attr("y", 20)
            .attr("x", -160)
-           .text("y Label");
+           .text("Weight(Kg)");
 
         self.svg.append("text")
-           .attr("x",(xmin + xmax)/2)
-           .attr("y", 256)
-           .text("x Label");
+           .attr("x",(xmin + xmax)/2 -20)
+           .attr("y", 256 - 10)
+           .text("Height(cm)");
 
         
            circles
