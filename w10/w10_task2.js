@@ -90,7 +90,7 @@ class ScatterPlot {
         const ymax = d3.max( self.data, d => d.y );
        
 
-        self.chart.selectAll("circle")
+       let circles =  self.chart.selectAll("circle")
             .data(self.data)
             .enter()
             .append("circle")
@@ -124,8 +124,29 @@ class ScatterPlot {
            .attr("y", 256)
            .text("x Label");
 
+        
+           circles
+           .on('mouseover', (e,d) => {
+               d3.select('#tooltip')
+                   .style('opacity', 1)
+                   .html(`<div class="tooltip-label">ID and score</div>(${d.a},${d.x}, ${d.y})`);
+                   e.style("fill","red");
+           })
+           .on('mousemove', (e) => {
+               const padding = 10;
+               d3.select('#tooltip')
+                   .style('left', (e.pageX + padding) + 'px')
+                   .style('top', (e.pageY + padding) + 'px');
+           })
+           .on('mouseleave', () => {
+               d3.select('#tooltip')
+                   .style('opacity', 0);
+                   circles.attr('fill',"block");
+           });
+
 
         
     
     }
 }
+

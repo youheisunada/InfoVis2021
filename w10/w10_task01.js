@@ -67,6 +67,8 @@ chart.selectAll("rect")
 d3.select('#reverse')
     .on('click', d => {
         data.reverse();
+        yaxis_group
+        .style('opacity', 0);
         init(data);
         Dgraph(data);
     });

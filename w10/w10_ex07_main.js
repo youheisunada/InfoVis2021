@@ -17,7 +17,7 @@ circles
     .attr('cy', d => d.y)
     .attr('r', d => d.r);
 
-circles
+    circles
     .on('mouseover', (e,d) => {
         d3.select('#tooltip')
             .style('opacity', 1)

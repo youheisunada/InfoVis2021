@@ -10,35 +10,64 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv")
 
         bar_chart = new BarChart( config, data );
         bar_chart.update();
-
-        d3.select('#reverse')
+        d3.select('#asort')
           .on('click', d => {
-             data = sorting(data);
+              asorting(data);
             if(bar_chart){
-                delete bar_chart.config;
+               bar_chart.del();
             }
-            
             bar_chart = new BarChart( config, data );
             bar_chart.update();
-            
     });
-        
 
+        d3.select('#dsort')
+          .on('click', d => {
+             dsorting(data);
+            if(bar_chart){
+               bar_chart.del();
+            }
+            bar_chart = new BarChart( config, data);
+            bar_chart.update();
+    });
+
+        d3.select('#reverse')
+    .on('click', d => {
+      
+        data.reverse();
+      if(bar_chart){
+         bar_chart.del();
+      }
+      bar_chart = new BarChart( config, data );
+      bar_chart.update();
+    });
+
+   
+    
     })
     .catch( error => {
         console.log( error );
     });
 
-function sorting(data){
-    data.sort(function(a,b){
-        if(a.w < b.w) return -1;
-        if(a.w > b.w) return 1;
-        return 0;
-    });
-    console.log(data);
-     
-    return data;
-}
+    function asorting(data){
+        data.sort(function(a,b){
+            if(a.w < b.w) return -1;
+            if(a.w > b.w) return 1;
+            return 0;
+        });
+        console.log(data);
+        return data;
+    }
+
+    function dsorting(data){
+        data.sort(function(a,b){
+            if(a.w > b.w) return -1;
+            if(a.w < b.w) return 1;
+            return 0;
+        });
+        console.log(data);
+         
+        return data;
+    }
 
 
 class BarChart {
@@ -106,7 +135,7 @@ class BarChart {
         const xmax = d3.max( self.data, d => d.w );
 
   // Draw bars
-        self.chart.selectAll("rect")
+       self.chart.selectAll("rect")
                   .data(self.data)
                   .join("rect")
                   .transition().duration(1000)
@@ -127,8 +156,15 @@ class BarChart {
       
           
         self.yaxis_group
-            .call( self.yaxis ); 
+            .call( self.yaxis );    
     }
+   
+    del(){
+        this.xaxis_group.style('opacity', 0);
+        this.yaxis_group.style('opacity', 0);
+        this.chart.selectAll("rect").style('opacity',0);
+    }
+   
     
 }
 
