@@ -1,4 +1,4 @@
-d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv")
+d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv") //ゲーム　「ポケットモンスター」に登場する「パチリス」の基本ステータス
     .then( data => {
         data.forEach( d => { d.w = +d.w;  });
          var config = {
@@ -7,7 +7,7 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv")
             height: 256,
             margin: {top:30, right:10, bottom:40, left:70}
         };
-
+        
         bar_chart = new BarChart( config, data );
         bar_chart.update();
         d3.select('#asort')
