@@ -1,4 +1,4 @@
-d3.csv("https://youheisunada.github.io/InfoVis2021/w10/data.csv")
+d3.csv("https://youheisunada.github.io/InfoVis2021/w10/data.csv") //小学生の平均身長・体重
     .then( data => {
         data.forEach( d => { d.x = +d.x; d.y = +d.y; });
 
@@ -96,7 +96,8 @@ class ScatterPlot {
             .append("circle")
             .attr("cx", d => self.xscale( d.x ) )
             .attr("cy", d => self.yscale( d.y ) )
-            .attr("r", d => d.r );
+            .attr("r", d => d.r )
+            .style('fill',d => d.c);
 
             self.chart.selectAll("text")
             .data(self.data)
