@@ -139,7 +139,7 @@ class LineChart {
             .on('mouseover', (e,d) => {
              d3.select('#tooltip')
                  .style('opacity', 1)
-                 .html(`<div class="tooltip-label">${d.mon}Mon</div>(${d.ip*3 })`);
+                 .html(`<div class="tooltip-label">${d.mon}</div>(${Math.round(d.ip*3) }K)`);
                  e.style("fill","red");
          })
          .on('mousemove', (e) => {
