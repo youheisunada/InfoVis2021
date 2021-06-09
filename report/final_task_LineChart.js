@@ -117,7 +117,7 @@ class LineChart {
        
         
 
-        self.svg.selectAll("circle")
+       let circles = self.svg.selectAll("circle")
             .data(self.data)
             .enter()
             .append("circle")
@@ -134,6 +134,25 @@ class LineChart {
         
         self.yaxis_group
             .call( self.yaxis );
+
+            circles
+            .on('mouseover', (e,d) => {
+             d3.select('#tooltip')
+                 .style('opacity', 1)
+                 .html(`<div class="tooltip-label">${d.mon}Mon</div>(${d.ip*3 })`);
+                 e.style("fill","red");
+         })
+         .on('mousemove', (e) => {
+             const padding = 10;
+             d3.select('#tooltip')
+                 .style('left', (e.pageX + padding) + 'px')
+                 .style('top', (e.pageY + padding) + 'px');
+         })
+         .on('mouseleave', () => {
+             d3.select('#tooltip')
+                 .style('opacity', 0);
+                 circles.attr('fill',"block");
+         });
        
     }
 
