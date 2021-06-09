@@ -92,9 +92,9 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task2.csv")
                 
     
             self.svg.append('path')
-                    .attr('d', line(self.data))
-                    .attr('stroke', 'black')
-                    .attr('fill', 'none');
+                .attr('d', line(self.data))
+                .attr('stroke', 'black')
+                .attr('fill', 'none');
             
             self.svg.selectAll("circle")
                 .data(self.data)

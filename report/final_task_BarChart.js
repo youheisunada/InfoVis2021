@@ -5,9 +5,6 @@ class BarChart {
             width: config.width || 256,
             height: config.height || 256,
             margin: config.margin || {top:10, right:10, bottom:10, left:10},
-            xlabel: config.xlabel || '',
-            ylabel: config.ylabel || '',
-            cscale: config.cscale
         };
         this.data = data;
         this.init();
@@ -32,10 +29,10 @@ class BarChart {
             .paddingOuter(0.1);
 
         self.yscale = d3.scaleLinear()
-            .range([self.inner_height, 0]);
+            .range([0,self.inner_height]);
 
         self.xaxis = d3.axisBottom(self.xscale)
-            .ticks(['setosa','versicolor','virginica'])
+            .ticks(['s18','s19','s20'])
             .tickSizeOuter(0);
 
         self.yaxis = d3.axisLeft(self.yscale)
@@ -49,10 +46,10 @@ class BarChart {
 
         const xlabel_space = 40;
         self.svg.append('text')
-            .style('font-size', '12px')
-            .attr('x', self.config.width / 2)
+            .style('font-size', '12px' )
+            .attr('x', self.config.width / 2 )
             .attr('y', self.inner_height + self.config.margin.top + xlabel_space)
-            .text( self.config.xlabel );
+            .text('Year');
 
         const ylabel_space = 50;
         self.svg.append('text')
@@ -62,57 +59,47 @@ class BarChart {
             .attr('x', -(self.config.height / 2))
             .attr('text-anchor', 'middle')
             .attr('dy', '1em')
-            .text( self.config.ylabel );
+            .text("Annual Sales(10,000)");
     }
 
     update() {
         let self = this;
-
-        const data_map = d3.rollup( self.data, v => v.length, d => d.species );
-        self.aggregated_data = Array.from( data_map, ([key,count]) => ({key,count}) );
-
-        self.cvalue = d => d.key;
-        self.xvalue = d => d.key;
-        self.yvalue = d => d.count;
-
-        const items = self.aggregated_data.map( self.xvalue );
-        self.xscale.domain(items);
-
-        const ymin = 0;
-        const ymax = d3.max( self.aggregated_data, self.yvalue );
-        self.yscale.domain([ymin, ymax]);
-
-        self.render();
+        const s18sum = d3.sum( self.data, d => d.s18 );
+        const s19sum = d3.sum( self.data, d => d.s19 );
+        const s20sum = d3.sum( self.data, d => d.s20 );
+            //self.yscale.domain(self.data.map(d => d.l))
+        
+            var data2 = [
+                {l:'sale_18', s:s18sum, c:'red'},
+                {l:'sale_19', s:s19sum, c:'blue'},
+                {l:'sale_20', s:s20sum, c:'green'}
+            ];
+                      
+            self.xscale.domain( data2.map(d => d.l));
+            self.yscale.domain([d3.max(data2, d => d.s),0 ] );
+            self.render(data2);
     }
-
-    render() {
+    
+    render(data2) {
         let self = this;
-
+        
         self.chart.selectAll(".bar")
-            .data(self.aggregated_data)
-            .join("rect")
-            .attr("class", "bar")
-            .attr("x", d => self.xscale( self.xvalue(d) ) )
-            .attr("y", d => self.yscale( self.yvalue(d) ) )
-            .attr("width", self.xscale.bandwidth())
-            .attr("height", d => self.inner_height - self.yscale( self.yvalue(d) ))
-            .attr("fill", d => self.config.cscale( self.cvalue(d) ))
-            .on('click', function(ev,d) {
-                const is_active = filter.includes(d.key);
-                if ( is_active ) {
-                    filter = filter.filter( f => f !== d.key );
-                }
-                else {
-                    filter.push( d.key );
-                }
-                Filter();
-                d3.select(this).classed('active', !is_active);
-            });
-
+        .data(data2)
+        .join("rect")
+        .attr("class", "bar")
+        .attr("x", d => self.xscale( d.l) )
+        .attr("y", d => self.yscale( d.s ) )
+        .attr("width", self.xscale.bandwidth())
+        .attr("height", d => self.inner_height - self.yscale( d.s ))
+        .attr("fill", d => d.c);
+       
+        
         self.xaxis_group
             .call(self.xaxis);
 
         self.yaxis_group
             .call(self.yaxis);
+
+           
     }
 }

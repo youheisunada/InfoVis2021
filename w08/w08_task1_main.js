@@ -81,14 +81,14 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv")
             const xmax = d3.max( self.data, d => d.w );
     
       // Draw bars
-            self.chart.selectAll("rect")
-                      .data(self.data)
-                      .enter()
-                      .append("rect")
-                      .attr("x", 0)
-                      .attr("y", d => self.yscale(d.l))
-                      .attr("width", d => self.xscale(d.w))
-                      .attr("height", self.yscale.bandwidth());
+      self.chart.selectAll("rect")
+      .data(self.data)
+      .enter()
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", d => self.yscale(d.l))
+      .attr("width", d => self.xscale(d.w))
+      .attr("height", self.yscale.bandwidth());
     
             self.chart.selectAll("text")
                       .data(self.data)

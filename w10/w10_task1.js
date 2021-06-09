@@ -30,7 +30,7 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/w08/w08_task1.csv") //ゲー�
             bar_chart.update();
     });
 
-        d3.select('#reverse')
+    d3.select('#reverse')
     .on('click', d => {
       
         data.reverse();

@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>W12: Example 03</title>
+        <title>Infovis Final Task</title>
 	<style>
 	 body {
 	     font-family: system-ui;
@@ -11,32 +11,32 @@
 	 .bar.active {
 	     stroke: #000;
 	 }
-	 #tooltip {
-	     position: absolute;
-	     opacity: 0;
-	     background: #fff;
-	     border: 1px solid #ddd;
-	     font-size: 12px;
-	     font-weight: 600;
-	     padding: 2px 8px;
-	 }
-	 .tooltip-label {
-	     font-weight: 500;
-	     font-size: 11px;
-	     color: #888;
-	 }
+	 
+	 .box { 
+		position: absolute;
+		top:30;
+		left:600;
+	}
 	</style>
     </head>
     <body>
-	<h2>Iris Flower Dataset</h2>
+	<h2>MK8DX sales</h2>
+	<div class="box">
+        <button type = "button" id = "sta18" > 18</button>
+        <button type = "button" id = "sta19" > 19</button>
+        <button type = "button" id = "sta20" > 20</button>     
+    </div>
+	
 	<div id="tooltip"></div>
 	<div class="container">
-	    <div><svg id="drawing_region_linechart"></svg></div>
 	    <div><svg id="drawing_region_barchart"></svg></div>
+		<div><svg id="drawing_region_linechart"></svg></div>
+		<div><svg id="drawing_region_annualcomparison"></svg></div>
 	</div>
 	<script src="https://d3js.org/d3.v6.min.js"></script>
 	<script src="final_task_LineChart.js"></script>
 	<script src="final_task_BarChart.js"></script>
 	<script src="final_task_main.js"></script>
+	<script src="final_task_AnnualComparison.js"></script>
     </body>
 </html>

@@ -1,4 +1,6 @@
-class LineChart {
+let st = 0;
+
+class Annual_LineChart {
 
     constructor( config, data ) {
         this.config = {
@@ -45,48 +47,70 @@ class LineChart {
             .attr('transform', `translate(0, 0)`);
 
             const xlabel_space = 40;
-            self.svg.append('text')
+         self.xtext = self.svg.append('text')
                 .style('font-size', '12px')
                 .attr('x', self.config.width / 2 )
                 .attr('y', self.inner_height + self.config.margin.top + xlabel_space)
                 .text('Month');
     
             const ylabel_space = 50;
-            self.svg.append('text')
+         self.ytext = self.svg.append('text')
                 .style('font-size', '12px')
                 .attr('transform', `rotate(-90)`)
                 .attr('y', self.config.margin.left - ylabel_space)
                 .attr('x', -(self.config.height / 2))
                 .attr('text-anchor', 'middle')
                 .attr('dy', '1em')
-                .text("Monthly Sales(10,000)");
-     
+                .text("Monthly sales ratio(%)");
     }
 
-    update() {
+    update(flag) {
         let self = this;
-        self.sale18 = d => d.s18;
-        self.sale19 = d => d.s19;
-        self.sale20 = d => d.s20;
+       
+        if( flag == 18){
+            self.data.forEach( d => {
+                st = d.s18/100;
+                d.s18 = d.s18/st;
+                d.s19 = d.s19/st;
+                d.s20 = d.s20/st; 
+            })
+        }
+
+        if( flag == 19){
+            self.data.forEach( d => {
+                st = d.s19/100;
+                d.s18 = d.s18/st;
+                d.s19 = d.s19/st
+                d.s20 = d.s20/st;
+            })
+        }
+            
+        if( flag == 20){
+            self.data.forEach( d => {
+                st = d.s20/100;
+                d.s18 = d.s18/st;
+                d.s19 = d.s19/st;
+                d.s20 = d.s20/st;          
+            })
+        }
+    
         self.xscale.domain( [1, 12] );
         const ymax18 = d3.max(self.data, d => d.s18);
         const ymax19 = d3.max(self.data, d => d.s19);
         const ymax20 = d3.max(self.data, d => d.s20);
         const ymax = Math.max(ymax18,ymax19,ymax20);
-        self.yscale.domain( [ ymax,0] );
+        self.yscale.domain( [ 200,0] );
         self.render();
+        
     }
 
     render() {
         let self = this;
-       
-
   // Draw lines
-        
         const line18 = d3.line()
             .x( d => self.xscale(d.mon) )
             .y( d => self.yscale(d.s18) );
-
+            
         const line19 = d3.line()
             .x( d => self.xscale(d.mon) )
             .y( d => self.yscale(d.s19) );
@@ -109,7 +133,7 @@ class LineChart {
             .attr('d', line20(self.data))
             .attr('stroke', 'green')
             .attr('fill', 'none');
-            
+          
         
 
         self.xaxis_group
@@ -117,7 +141,15 @@ class LineChart {
     
         
         self.yaxis_group
-            .call( self.yaxis );
-       
+            .call( self.yaxis );        
     }
+    
+    del(){
+        this.xaxis_group.style('opacity', 0);
+        this.yaxis_group.style('opacity', 0);
+        this.chart.style('opacity',0);
+        this.xtext.style('opacity',0);
+        this.ytext.style('opacity',0);
+    }
+
 }

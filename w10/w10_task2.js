@@ -128,22 +128,22 @@ class ScatterPlot {
         
            circles
            .on('mouseover', (e,d) => {
-               d3.select('#tooltip')
-                   .style('opacity', 1)
-                   .html(`<div class="tooltip-label">${d.label}</div>(${d.x}, ${d.y})`);
-                   e.style("fill","red");
-           })
-           .on('mousemove', (e) => {
-               const padding = 10;
-               d3.select('#tooltip')
-                   .style('left', (e.pageX + padding) + 'px')
-                   .style('top', (e.pageY + padding) + 'px');
-           })
-           .on('mouseleave', () => {
-               d3.select('#tooltip')
-                   .style('opacity', 0);
-                   circles.attr('fill',"block");
-           });
+            d3.select('#tooltip')
+                .style('opacity', 1)
+                .html(`<div class="tooltip-label">${d.label}</div>(${d.x}, ${d.y})`);
+                e.style("fill","red");
+        })
+        .on('mousemove', (e) => {
+            const padding = 10;
+            d3.select('#tooltip')
+                .style('left', (e.pageX + padding) + 'px')
+                .style('top', (e.pageY + padding) + 'px');
+        })
+        .on('mouseleave', () => {
+            d3.select('#tooltip')
+                .style('opacity', 0);
+                circles.attr('fill',"block");
+        });
 
 
         
