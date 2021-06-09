@@ -45,14 +45,14 @@ class LineChart {
             .attr('transform', `translate(0, 0)`);
 
             const xlabel_space = 40;
-            self.svg.append('text')
+        self.xtext = self.svg.append('text')
                 .style('font-size', '12px')
                 .attr('x', self.config.width / 2 )
                 .attr('y', self.inner_height + self.config.margin.top + xlabel_space)
                 .text('Month');
     
             const ylabel_space = 50;
-            self.svg.append('text')
+        self.ytext = self.svg.append('text')
                 .style('font-size', '12px')
                 .attr('transform', `rotate(-90)`)
                 .attr('y', self.config.margin.left - ylabel_space)
@@ -94,6 +94,10 @@ class LineChart {
         const line20 = d3.line()
             .x( d => self.xscale(d.mon) )
             .y( d => self.yscale(d.s20) );
+        
+        
+        
+
 
         self.chart.append('path')
             .attr('d', line18(self.data))
@@ -109,6 +113,18 @@ class LineChart {
             .attr('d', line20(self.data))
             .attr('stroke', 'green')
             .attr('fill', 'none');
+        
+       
+        
+
+        self.svg.selectAll("circle")
+            .data(self.data)
+            .enter()
+            .append("circle")
+            .attr("cx",d => self.xscale(d.mon) + 52 )
+            .attr("cy",d => self.yscale(d.ip) - 70 )
+            .attr("r",5)
+            .style('fill', '#000');
             
         
 
@@ -119,5 +135,13 @@ class LineChart {
         self.yaxis_group
             .call( self.yaxis );
        
+    }
+
+    del(){
+        this.xaxis_group.style('opacity', 0);
+        this.yaxis_group.style('opacity', 0);
+        this.chart.style('opacity',0);
+        this.xtext.style('opacity',0);
+        this.ytext.style('opacity',0);
     }
 }

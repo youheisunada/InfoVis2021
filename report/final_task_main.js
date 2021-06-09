@@ -6,16 +6,19 @@ let bar_chart;
 let annual_chart;
 let sta = [];
 let flag = 0;
+let flag_ip = 0;
 
 d3.csv("https://youheisunada.github.io/InfoVis2021/report/game.csv")
     .then( data => {
         input_data = data;
         annual_data = data;
         oridinal_data = data;
+        let sum_ip = d3.sum( input_data, d => d.ip )/12;
         input_data.forEach( d => {
             d.s18 = +d.s18;
             d.s19 = +d.s19;
-            d.s20 = +d.s20; 
+            d.s20 = +d.s20;
+            d.ip  = d.ip/sum_ip * 10;
         })
         annual_data = data;
         annual_data.forEach( d => {
@@ -24,13 +27,7 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/report/game.csv")
             d.s20 = d.s20; 
         });
 
-        line_chart = new LineChart( {
-            parent: '#drawing_region_linechart',
-            width: 256,
-            height: 256,
-            margin: {top:10, right:10, bottom:50, left:50},
-        }, input_data );
-        line_chart.update();
+        
 
         bar_chart = new BarChart( {
             parent: '#drawing_region_barchart',
@@ -40,8 +37,14 @@ d3.csv("https://youheisunada.github.io/InfoVis2021/report/game.csv")
         }, input_data );
         bar_chart.update();
 
-      
-
+        line_chart = new LineChart( {
+            parent: '#drawing_region_linechart',
+            width: 256,
+            height: 256,
+            margin: {top:10, right:10, bottom:50, left:50},
+        }, input_data );
+        line_chart.update(flag_ip); 
+        
         d3.select('#sta18')
         .on('click', d => {
             if(annual_chart){
